@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+
+
 ### STS ###
 .apt_generated
 .classpath
@@ -31,3 +33,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Archivos de credenciales - NUNCA SUBIR ###
+.env
+.env.local
+.env.*.local
+*.env
+application-local.properties
