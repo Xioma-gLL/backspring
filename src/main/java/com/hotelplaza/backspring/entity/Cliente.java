@@ -48,6 +48,9 @@ public class Cliente implements UserDetails {
     @Column(name = "is_active")
     private Boolean isActive = true;
     
+    @Column(name = "photo_url")
+    private String photoUrl;
+    
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

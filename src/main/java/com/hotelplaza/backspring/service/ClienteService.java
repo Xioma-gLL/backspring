@@ -53,6 +53,7 @@ public class ClienteService {
                 .lastName(cliente.getLastName())
                 .phone(cliente.getPhone())
                 .phonePrefix(cliente.getPhonePrefix())
+                .photoUrl(cliente.getPhotoUrl())
                 .message("Registro exitoso")
                 .build();
     }
@@ -82,6 +83,7 @@ public class ClienteService {
                     .lastName(cliente.getLastName())
                     .phone(cliente.getPhone())
                     .phonePrefix(cliente.getPhonePrefix())
+                    .photoUrl(cliente.getPhotoUrl())
                     .message("Login exitoso")
                     .build();
         } catch (Exception e) {

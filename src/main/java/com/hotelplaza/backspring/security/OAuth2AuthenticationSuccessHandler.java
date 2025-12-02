@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Component
@@ -40,11 +42,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         final String email;
         final String firstName;
         final String lastName;
+        final String photoUrl;
         
         if ("google".equals(provider)) {
             email = (String) attributes.get("email");
             firstName = (String) attributes.get("given_name");
             lastName = (String) attributes.get("family_name");
+            photoUrl = (String) attributes.get("picture");
         } else {
             email = (String) attributes.get("email");
             String name = (String) attributes.get("name");
@@ -56,6 +60,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 firstName = "";
                 lastName = "";
             }
+            photoUrl = (String) attributes.get("picture");
         }
         
         // Buscar o crear usuario
@@ -66,19 +71,32 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                             .firstName(firstName)
                             .lastName(lastName)
                             .password("") // No password for OAuth users
+                            .photoUrl(photoUrl)
                             .isActive(true)
                             .build();
                     return clienteRepository.save(newCliente);
                 });
         
+        // Siempre actualizar la foto desde Google (puede haber cambiado)
+        if (photoUrl != null && !photoUrl.equals(cliente.getPhotoUrl())) {
+            cliente.setPhotoUrl(photoUrl);
+            clienteRepository.save(cliente);
+        }
+        
         // Generar JWT
         String token = jwtService.generateToken(cliente);
         
+        // Codificar los parámetros para la URL
+        String encodedPhotoUrl = cliente.getPhotoUrl() != null 
+                ? URLEncoder.encode(cliente.getPhotoUrl(), StandardCharsets.UTF_8) 
+                : "";
+        
         // Redirigir al frontend con el token
         String redirectUrl = frontendUrl + "/oauth-callback?token=" + token 
-                + "&email=" + cliente.getEmail()
-                + "&firstName=" + (cliente.getFirstName() != null ? cliente.getFirstName() : "")
-                + "&lastName=" + (cliente.getLastName() != null ? cliente.getLastName() : "");
+                + "&email=" + URLEncoder.encode(cliente.getEmail(), StandardCharsets.UTF_8)
+                + "&firstName=" + URLEncoder.encode(cliente.getFirstName() != null ? cliente.getFirstName() : "", StandardCharsets.UTF_8)
+                + "&lastName=" + URLEncoder.encode(cliente.getLastName() != null ? cliente.getLastName() : "", StandardCharsets.UTF_8)
+                + "&photoUrl=" + encodedPhotoUrl;
         
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }

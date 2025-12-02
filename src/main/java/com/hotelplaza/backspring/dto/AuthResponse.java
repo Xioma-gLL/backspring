@@ -16,6 +16,7 @@ public class AuthResponse {
     private String lastName;
     private String phone;
     private String phonePrefix;
+    private String photoUrl;
     private String message;
     private boolean success;
 }
