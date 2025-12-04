@@ -23,8 +23,8 @@ WORKDIR /app
 # Copiar el JAR desde la etapa de build
 COPY --from=build /app/target/*.jar app.jar
 
-# Puerto expuesto
+# 3) Puerto que usará Spring Boot
 EXPOSE 8080
 
-# Ejecutar con perfil de producción
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]
+# 4) Comando para ejecutar la app
+ENTRYPOINT ["java","-jar","/app.jar"]
