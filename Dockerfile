@@ -1,17 +1,12 @@
-# Etapa 1: Build
-FROM maven:3.9.6-eclipse-temurin-21 AS build
-WORKDIR /app
-COPY pom.xml .
-COPY src ./src
-RUN mvn clean package -DskipTests
+# 1) Usamos una imagen con Java 17 (o la versión que uses)
+FROM eclipse-temurin:17-jdk-alpine
 
-# Etapa 2: Runtime
-FROM eclipse-temurin:21-jre-alpine
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+# 2) Copiamos el JAR generado por Spring Boot
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
 
-# Puerto expuesto
+# 3) Puerto que usará Spring Boot
 EXPOSE 8080
 
-# Ejecutar con perfil de producción
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]
+# 4) Comando para ejecutar la app
+ENTRYPOINT ["java","-jar","/app.jar"]
