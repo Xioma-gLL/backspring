@@ -49,6 +49,8 @@ public class WebReservationRequestController {
     @PostMapping
     public ResponseEntity<Map<String, Object>> createRequest(@RequestBody WebReservationRequestDTO dto) {
         try {
+            System.out.println("Recibiendo solicitud de reserva web: " + dto.getGuestName());
+            
             WebReservationRequest request = new WebReservationRequest();
             request.setDocumentType(dto.getDocumentType());
             request.setDocumentNumber(dto.getDocumentNumber());
@@ -74,6 +76,7 @@ public class WebReservationRequestController {
             request.setStatus("pending");
             
             WebReservationRequest saved = repository.save(request);
+            System.out.println("Reserva web guardada con ID: " + saved.getId());
             
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
