@@ -49,8 +49,7 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/public/**",
                                 "/api/rooms/**",
-                                "/api/web-reservation-requests",
-                                "/api/web-reservation-requests/by-email/**",
+                                "/api/web-reservation-requests/**",
                                 "/oauth2/**",
                                 "/login/oauth2/**",
                                 "/error"
