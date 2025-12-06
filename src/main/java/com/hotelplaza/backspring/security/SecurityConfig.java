@@ -83,8 +83,9 @@ public class SecurityConfig {
         List<String> allowedOrigins = new ArrayList<>(Arrays.asList(
                 "http://localhost:5173",
                 "http://localhost:3000",
-                "http://127.0.0.1:5173",
-                "http://127.0.0.1:3000"
+                "https://front-spreen.onrender.com",
+                "https://hotelplazatrujillo.netlify.app",
+                "https://plazatrujillo.netlify.app"
         ));
         
         // Agregar orígenes de producción desde variable de entorno
