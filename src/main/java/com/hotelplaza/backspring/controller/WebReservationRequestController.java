@@ -31,7 +31,8 @@ public class WebReservationRequestController {
             List<WebReservationRequest> requests = repository.findByEmailOrderByCreatedAtDesc(email);
             
             Map<String, Object> response = new HashMap<>();
-            response.put("requests", requests);
+            response.put("success", true);
+            response.put("data", requests);
             
             return ResponseEntity.ok(response);
             
